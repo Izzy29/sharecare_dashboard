@@ -26,6 +26,7 @@ const UsersVendorPage = async ({ searchParams }) => {
                         <td>District Date</td>
                         <td>Business Type</td>
                         <td>Status</td>
+                        <td>Action</td>
                     </tr>
                 </thead>
                 <tbody>

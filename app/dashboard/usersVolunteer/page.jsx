@@ -19,12 +19,13 @@ const UsersVolunteerPage = async ({ searchParams }) => {
 
             </div>
             <table className={styles.table}>
-                <thead>
+                <thead className={styles.header}>
                     <tr>
                         <td>Volunteer Name</td>
                         <td>Registration Date</td>
                         <td>District Date</td>
                         <td>Association</td>
+                        <td>Action</td>
                     </tr>
                 </thead>
                 <tbody>
