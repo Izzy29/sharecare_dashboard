@@ -1,0 +1,82 @@
+.container {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: var(--bgSoft);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 5px;
+    margin-right: 5px;
+    position: relative;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.title {
+    color: var(--text);
+    font-weight: bold;
+    text-transform: capitalize;
+    font-size: 20px;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--bgGrey);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.logout {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    /* Optional: Remove padding if you want the icon to be closer to the button edges */
+    font-size: 20px;
+    /* Set the desired font size for the icon */
+    color: #000;
+    /* Set the desired color for the icon */
+}
+
+.tooltip {
+    position: absolute;
+    padding: 10px;
+    bottom: -20px;
+    border-radius: 10px;
+    /* Adjust the distance between the icon and the tooltip as needed */
+    left: 97%;
+    transform: translateX(-50%);
+    opacity: 0;
+    /* Initially hidden */
+    transition: opacity 0.3s ease-in-out;
+    font-size: medium;
+    background-color: red;
+    color: white;
+}
+
+.logout:hover .tooltip {
+    opacity: 1;
+    /* Show on hover */
+}
+
+.input {
+    background-color: transparent;
+    border: none;
+    color: var(--text);
+}
+
+.icons {
+    display: flex;
+    gap: 20px;
+}
+
+.icons:hover {
+    cursor: pointer;
+}

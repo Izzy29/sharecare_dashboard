@@ -1,0 +1,20 @@
+/* loading.module.css */
+
+.loadingContainer {
+    display: flex;
+    align-items: center;
+    /* Center vertically */
+    justify-content: center;
+    /* Center horizontally */
+    height: 70vh;
+    /* Full viewport height */
+}
+
+.loading {
+    /* Add your loading styles here */
+    font-size: 20px;
+    padding: 20px;
+    border: transparent;
+    border-radius: 8px;
+    background-color: #fff;
+}

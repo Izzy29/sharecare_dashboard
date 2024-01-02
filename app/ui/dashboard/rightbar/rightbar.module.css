@@ -1,0 +1,59 @@
+.container {
+    position: fixed;
+    margin-right: 5px;
+}
+
+.item {
+    background: linear-gradient(to bottom, #AED581, #8BC34A);
+    padding: 20px 24px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.bgContainer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 50%;
+    height: 40%;
+}
+
+.bg {
+    object-fit: contain;
+    opacity: 0.2;
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.notification {
+    font-weight: bold;
+}
+
+.subtitle {
+    color: var(--text);
+    font-weight: 500;
+    font-size: 12px;
+}
+
+.desc {
+    color: var(--text);
+    font-size: 14px;
+}
+
+.button {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: max-content;
+    background-color: #5d57c9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

@@ -1,0 +1,115 @@
+.container {
+    padding: 20px;
+    margin: 20px 5px 5px 5px;
+    background-color: white;
+    height: 900px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.text {
+    font-size: medium;
+    font-weight: bold;
+    color: darkgreen;
+}
+
+.report {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.document {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.th1 {
+    width: 30px;
+}
+
+.th2 {
+    width: 100%;
+}
+
+.th3 {
+    width: 130px;
+}
+
+.download {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.list {
+    display: flex;
+    background-color: var(--mainColor);
+    padding: 10px 0px 10px 20px;
+    margin-top: 10px;
+    height: 90px;
+    border-radius: 10px;
+}
+
+.icons {
+    width: 40px;
+    height: 40px;
+}
+
+.table {
+    width: 100%;
+    border: 1px solid;
+}
+
+.table td {
+    padding: 10px;
+}
+
+.table th {
+    padding: 10px;
+    background-color: #4FAF5A;
+    color: white;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.a {
+    width: 5%;
+}
+
+.b {
+    width: 80%;
+}
+
+.c {
+    width: 10%;
+}
+
+.productImage {
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.button {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: var(--text);
+    border: none;
+    cursor: pointer;
+}
+
+.button:hover {
+    filter: brightness(80%);
+}
+
+.delete {
+    background-color: orange;
+}

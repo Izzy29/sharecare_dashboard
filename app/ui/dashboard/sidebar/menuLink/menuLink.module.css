@@ -1,0 +1,21 @@
+.container {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 5px 0px;
+    border-radius: 10px;
+    font-size: 13px;
+}
+
+.container:hover {
+    background-color: #91D673;
+}
+
+.container.active {
+    background-color: var(--mainColor);
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    margin-left: -10px;
+}

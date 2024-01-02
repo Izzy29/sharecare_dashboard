@@ -1,0 +1,37 @@
+.container {
+    height: 350px;
+    background-color: var(--bgSoft);
+    padding: 20px;
+    border-radius: 10px;
+    margin-left: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.title {
+    font-weight: 400;
+    color: var(--textSoft);
+    margin-bottom: 20px;
+    font-size: 15px;
+    text-align: center;
+}
+
+.tooltip {
+    background: white;
+    border: 1px solid #4FAF5A;
+    padding: 15px;
+}
+
+.tooltip1 {
+    color: red;
+    font-size: small;
+}
+
+.tooltip2 {
+    color: #bababa;
+    font-size: small;
+}
+
+.tooltip3 {
+    color: #8884d8;
+    font-size: small;
+}

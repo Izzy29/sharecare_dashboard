@@ -1,0 +1,25 @@
+:root {
+    --bg: #f4f7fe;
+    --bgSoft: #ffffff;
+    --bgGrey: #EEEEEE;
+    --bgDashboard: # --text: black;
+    --text: black;
+    --textSoft: #aaaaaa;
+    --mainColor: #4FAF5A;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text)
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
