@@ -1,5 +1,6 @@
 "use client"
 
+import React, { useState, useEffect } from 'react';
 import styles from './chart.module.css'
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -43,7 +44,6 @@ const data = [
 
 const CustomTooltip = ({ active, payload }) => {
     if (active) {
-
         return (
             <div className={styles.tooltip}>
                 <p className={styles.tooltip3}>{`Number of Student: ${payload[0].value}`}</p>
@@ -56,6 +56,19 @@ const CustomTooltip = ({ active, payload }) => {
 };
 
 const Chart = () => {
+    const [updatedData, setUpdatedData] = useState(data);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const randomValue = Math.floor(Math.random() * 10); // Generate a random value between 1000 and 6000
+            const newData = [...updatedData];
+            const day27Index = newData.findIndex(item => item.day === "27/1");
+            newData[day27Index].food = newData[day27Index].food + randomValue;
+            setUpdatedData(newData);
+        }, 5000); // Update the value every 2 seconds
+
+        return () => clearInterval(interval); // Clean up the interval on component unmount
+    }, [updatedData]);
 
     const customPayload = [
         { value: 'Number of Student', type: 'line', id: 'food', color: '#8884d8' },
@@ -69,7 +82,7 @@ const Chart = () => {
                 <LineChart
                     width={500}
                     height={300}
-                    data={data}
+                    data={updatedData}
                     margin={{
                         top: 5,
                         right: 30,
