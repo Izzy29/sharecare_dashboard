@@ -113,3 +113,7 @@
 .delete {
     background-color: orange;
 }
+
+.icon:hover {
+    cursor: pointer;
+}
