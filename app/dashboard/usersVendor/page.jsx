@@ -23,8 +23,6 @@ const UsersVendorPage = async ({ searchParams }) => {
                     <tr>
                         <td>Vendor Name</td>
                         <td>Registration Date</td>
-                        <td>District Date</td>
-                        <td>Business Type</td>
                         <td>Status</td>
                         <td>Action</td>
                     </tr>
@@ -45,8 +43,6 @@ const UsersVendorPage = async ({ searchParams }) => {
                                 </div>
                             </td>
                             <td>{user.registrationdate.toString().slice(4, 16)}</td>
-                            <td>{user.district}</td>
-                            <td>{user.businesstype}</td>
                             <td>
                                 {user.status ? (
                                     <span style={{ color: 'green', fontWeight: 'bold' }}>Verified</span>
