@@ -7,7 +7,7 @@ const Test = () => {
 
     return (
         <div className={styles.container}>
-            <StoreImageTextFirebase />
+            <Testpage />
         </div>
     )
 }

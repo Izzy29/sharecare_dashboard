@@ -21,7 +21,7 @@ const Report = () => {
 
     return (
         <div className={styles.container}>
-            <text className={styles.text}>Monthly Report</text>
+            <label className={styles.text}>Monthly Report</label>
             <div className={styles.report}>
                 <table className={styles.table}>
                     <thead>
@@ -50,7 +50,7 @@ const Report = () => {
                 </table>
             </div>
 
-            <text className={styles.text}>List of Documents</text>
+            <label className={styles.text}>List of Documents</label>
             <div className={styles.document}>
                 <table className={styles.table}>
                     <thead>
