@@ -14,40 +14,102 @@ export const generatePDF = async (id, name) => {
     switch (id) {
         //Monthly Report
         case 1:
+            doc.addImage("/reportfront.png", "PNG", 3, 3, 205, 292);
             doc.setFont('helvetica', 'bold');
-            doc.setFontSize(18);
-            doc.text('Monthly Report', 105, 20, { align: 'center' });
-            doc.text(name, 105, 30, { align: 'center' });
+            doc.setFontSize(70);
+            doc.text('MONTHLY', 20, 110);
+            doc.setTextColor(0, 102, 0);
+            doc.text('REPORT', 20, 135);
 
-            doc.setFontSize(12);
-            doc.text(`You are producing a monthly report of November 2023 which is document ${name}`, 20, 40, { align: 'left' });
+            doc.setTextColor(0, 0, 0);
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(20);
+            doc.text('1 - 30 November 2023', 20, 150);
 
-            doc.setFontSize(12);
-            doc.text('Report Content:', 20, 60, { underline: true });
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(0, 102, 0);
+            doc.text('Produced by:', 20, 230);
 
-            doc.setFontSize(12);
-            doc.text('- Sales data', 40, 80, { indent: 20 });
-            doc.text('- Marketing analysis', 40, 95, { indent: 20 });
-            doc.text('- Financial summary', 40, 110, { indent: 20 });
+            doc.setTextColor(0, 0, 0);
+            doc.setFont('helvetica');
+            doc.setFontSize(16);
+            doc.text('ShareCare: Food Distribution', 20, 240);
+            doc.text('Management System', 20, 248);
+            doc.text('Dashboard', 20, 256);
 
-            doc.setFontSize(12);
-            doc.text('Please review the attached monthly report for more details.', 20, 130, { align: 'left' });
+            doc.addPage("a4", "1");
+            doc.addImage("/reportnovember2023.png", "PNG", 3, 3, 205, 292);
 
-            doc.setFont('helvetica', 'italic');
-            doc.setFontSize(10);
-            doc.text('Generated on: ' + new Date().toDateString(), pdfWidth - 10, pdfHeight - 10, { align: 'right' });
+            doc.addPage("a4", "2");
+            doc.addImage("/reportthankyou.png", "PNG", 3, 3, 205, 292);
+
             doc.save(`MonthlyReport_${name}.pdf`);
             break;
 
         //Monthly Report
         case 2:
-            doc.text(`You are producing a monthly report of December 2023 which is document ${name}`, 10, 10);
+            doc.addImage("/reportfront.png", "PNG", 3, 3, 205, 292);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(70);
+            doc.text('MONTHLY', 20, 110);
+            doc.setTextColor(0, 102, 0);
+            doc.text('REPORT', 20, 135);
+
+            doc.setTextColor(0, 0, 0);
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(20);
+            doc.text('1 - 31 Disember 2023', 20, 150);
+
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(0, 102, 0);
+            doc.text('Produced by:', 20, 230);
+
+            doc.setTextColor(0, 0, 0);
+            doc.setFont('helvetica');
+            doc.setFontSize(16);
+            doc.text('ShareCare: Food Distribution', 20, 240);
+            doc.text('Management System', 20, 248);
+            doc.text('Dashboard', 20, 256);
+
+            doc.addPage("a4", "1");
+            doc.addImage("/reportdecember2023.png", "PNG", 3, 3, 205, 292);
+
+            doc.addPage("a4", "2");
+            doc.addImage("/reportthankyou.png", "PNG", 3, 3, 205, 292);
+
             doc.save(`MonthlyReport_${name}.pdf`);
             break;
 
         //Monthly Report
         case 3:
-            doc.text(`You are producing a monthly report of November 2024 which is document ${name}`, 10, 10);
+            doc.addImage("/reportfront.png", "PNG", 3, 3, 205, 292);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(70);
+            doc.text('MONTHLY', 20, 110);
+            doc.setTextColor(0, 102, 0);
+            doc.text('REPORT', 20, 135);
+
+            doc.setTextColor(0, 0, 0);
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(20);
+            doc.text('1 - 31 January 2024', 20, 150);
+
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(0, 102, 0);
+            doc.text('Produced by:', 20, 230);
+
+            doc.setTextColor(0, 0, 0);
+            doc.setFont('helvetica');
+            doc.setFontSize(16);
+            doc.text('ShareCare: Food Distribution', 20, 240);
+            doc.text('Management System', 20, 248);
+            doc.text('Dashboard', 20, 256);
+
+            doc.addPage("a4", "1");
+            doc.addImage("/reportnovember2023.png", "PNG", 3, 3, 205, 292);
+            doc.addPage("a4", "2");
+            doc.addImage("/reportthankyou.png", "PNG", 3, 3, 205, 292);
+
             doc.save(`MonthlyReport_${name}.pdf`);
             break;
 

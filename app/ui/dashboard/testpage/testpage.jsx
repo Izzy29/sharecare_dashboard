@@ -6,29 +6,21 @@ import React, { useState } from 'react';
 async function addDataToFirestore(name) {
 
     try {
-        const createDocument = async (id, studentname, email, checkpoint) => {
-            await setDoc(doc(db, "userstudent", id), {
-                studentname,
-                email,
-                checkpoint
+        /*const createDocument = async (id, usertype, totaluser) => {
+            await setDoc(doc(db, "currentregistereduser", id), {
+                usertype,
+                totaluser
             });
         };
 
         // Creating 10 documents with different and similar checkpoints
         // Creating 10 more documents with different and similar checkpoints
-        await createDocument("11", "Hannah Davis", "hannah@gmail.com", "Kolej Tan Sri Aishah Ghani");
-        await createDocument("12", "Isaac Taylor", "isaac@gmail.com", "Kolej 10");
-        await createDocument("13", "Jessica White", "jessica@gmail.com", "Kolej Tun Dr Ismail");
-        await createDocument("14", "Kevin Johnson", "kevin@gmail.com", "Kolej Canselor");
-        await createDocument("15", "Lily Brown", "lily@gmail.com", "Kossas");
-        await createDocument("16", "Michael Chen", "michael@gmail.com", "Kolej Pendeta Zaba");
-        await createDocument("17", "Natalie Miller", "natalie@gmail.com", "Kolej Tan Sri Aishah Ghani");
-        await createDocument("18", "Oliver Wang", "oliver@gmail.com", "Kolej 10");
-        await createDocument("19", "Penelope Smith", "penelope@gmail.com", "Kolej Tun Dr Ismail");
-        await createDocument("20", "Quincy Lee", "quincy@gmail.com", "Kolej Canselor");
+        await createDocument("1", "student", "345");
+        await createDocument("2", "vendor", "10");
+        await createDocument("3", "volunteer", "52");*/
 
 
-        /*const docRef = doc(db, "uservolunteer", name);
+        const docRef = doc(db, "historyregistereduser", "1");
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
@@ -43,8 +35,8 @@ async function addDataToFirestore(name) {
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, " => ", doc.data());
-        });
-        return docSnap;*/
+        });*/
+        return docSnap;
 
 
     } catch (error) {
@@ -58,19 +50,18 @@ const Testpage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const added = await addDataToFirestore(name);
-        alert("Inserting successfully!");
-        /*console.log(added.data())
+        console.log(added?.data()); // Add null check before calling data()
+
         if (added) {
             setName("");
-            const found = added.data().volunteername.includes("John Doe");
+            const found = added.data()?.usertype.includes(name); // Use e.target.value instead of just e
             if (found) {
-                alert("Found! " + added.data().volunteername);
+                alert("Found! " + name);
+            } else {
+                alert("Not found! " + name);
             }
-            else {
-                alert("Not found!" + added.data().volunteername);
-            }
-        }*/
-    }
+        }
+    };
 
     const handleRetrieve = async () => {
         getDocs(collection(db, 'uservendor'))
