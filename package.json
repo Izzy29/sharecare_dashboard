@@ -16,6 +16,8 @@
     "firebase": "^10.7.1",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.1",
+    "moment": "^2.30.1",
+    "moment-timezone": "^0.5.44",
     "mongoose": "^8.0.2",
     "next": "14.0.1",
     "next-auth": "^5.0.0-beta.3",

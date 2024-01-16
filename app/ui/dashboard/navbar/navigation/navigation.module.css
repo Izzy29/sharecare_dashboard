@@ -12,8 +12,8 @@
 }
 
 .title {
-    color: var(--text);
-    font-weight: bold;
+    color: white;
+    font-weight: 700;
     text-transform: capitalize;
     font-size: 20px;
 }

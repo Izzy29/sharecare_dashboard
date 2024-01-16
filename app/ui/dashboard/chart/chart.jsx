@@ -4,50 +4,56 @@ import React, { useState, useEffect } from 'react';
 import styles from './chart.module.css'
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const data = [
+const initialData = [
     {
-        day: "21/1",
-        food: 4000,
-        estimation: 2400,
+        name: "16",
+        studentreceived: 123,
+        estimation: 320,
     },
     {
-        day: "22/1",
-        food: 3000,
-        estimation: 1398,
+        name: "17",
+        studentreceived: 524,
+        estimation: 987,
     },
     {
-        day: "23/1",
-        food: 2000,
-        estimation: 3800,
+        name: "18",
+        studentreceived: 456,
+        estimation: 765,
     },
     {
-        day: "24/1",
-        food: 2780,
-        estimation: 3908,
+        name: "19",
+        studentreceived: 323,
+        estimation: 543,
     },
     {
-        day: "25/1",
-        food: 1890,
-        estimation: 4800,
+        name: "20",
+        studentreceived: 863,
+        estimation: 786,
     },
     {
-        day: "26/1",
-        food: 2390,
-        estimation: 3800,
+        name: "21",
+        studentreceived: 276,
+        estimation: 276,
     },
     {
-        day: "27/1",
-        food: 3490,
-        estimation: 4300,
+        name: "22",
+        studentreceived: 103,
+        estimation: 425,
     },
 ];
 
 const CustomTooltip = ({ active, payload }) => {
-    if (active) {
+    if (active && payload && payload.length >= 2) {
         return (
             <div className={styles.tooltip}>
-                <p className={styles.tooltip3}>{`Number of Student: ${payload[0].value}`}</p>
-                <p className={styles.tooltip2}>{`Estimation: ${payload[1].value}`}</p>
+                <p className={styles.tooltip3}>{`Current Month: ${payload[0].value}`}</p>
+                <p className={styles.tooltip2}>{`Previous Month: ${payload[1].value}`}</p>
+            </div>
+        );
+    } else if (active && payload && payload.length === 1) {
+        return (
+            <div className={styles.tooltip}>
+                <p className={styles.tooltip2}>{`Previous Month: ${payload[0].value}`}</p>
             </div>
         );
     }
@@ -56,45 +62,51 @@ const CustomTooltip = ({ active, payload }) => {
 };
 
 const Chart = () => {
-    const [updatedData, setUpdatedData] = useState(data);
+    const [data, setData] = useState(initialData);
 
     useEffect(() => {
         const interval = setInterval(() => {
-            const randomValue = Math.floor(Math.random() * 10); // Generate a random value between 1000 and 6000
-            const newData = [...updatedData];
-            const day27Index = newData.findIndex(item => item.day === "27/1");
-            newData[day27Index].food = newData[day27Index].food + randomValue;
-            setUpdatedData(newData);
-        }, 5000); // Update the value every 2 seconds
+            setData(prevData => {
+                const newData = [...prevData];
+                const index = newData.findIndex(item => item.name === "22");
+                if (index !== -1) {
+                    newData[index] = {
+                        ...newData[index],
+                        studentreceived: Math.floor(newData[index].studentreceived + Math.random() * 8),
+                    };
+                }
+                return newData;
+            });
+        }, 5000);
 
-        return () => clearInterval(interval); // Clean up the interval on component unmount
-    }, [updatedData]);
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
 
     const customPayload = [
-        { value: 'Number of Student', type: 'line', id: 'food', color: '#8884d8' },
-        { value: 'Estimation', type: 'line', id: 'estimation', color: '#bababa' },
+        { value: 'Current Month', type: 'line', id: 'student', color: '#8884d8' },
+        { value: 'Previous Month', type: 'line', id: 'estimation', color: '#bababa' },
     ];
 
     return (
         <div className={styles.container}>
-            <h2 className={styles.title}>Number of Student Received the Food</h2>
+            <h2 className={styles.title}>Number of Student Received Food</h2>
             <ResponsiveContainer width="100%" height="90%">
                 <LineChart
-                    width={500}
-                    height={300}
-                    data={updatedData}
+                    data={data}
                     margin={{
                         top: 5,
                         right: 30,
-                        left: 20,
+                        left: 0,
                         bottom: 5,
                     }}
                 >
-                    <XAxis dataKey="day" />
-                    <YAxis />
+                    <XAxis dataKey="name" className={styles.fontSize} />
+                    <YAxis className={styles.fontSize} label={{ value: "Number of Student", angle: -90, position: "insideLeft", style: { textAnchor: "middle" } }} />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend payload={customPayload} />
-                    <Line type="monotone" dataKey="food" stroke="#8884d8" />
+                    <Line type="monotone" dataKey="studentreceived" stroke="#8884d8" />
                     <Line type="monotone" dataKey="estimation" stroke="#bababa" strokeDasharray="3 4 5 2" />
                 </LineChart>
             </ResponsiveContainer>

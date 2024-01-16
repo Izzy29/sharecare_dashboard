@@ -1,53 +1,59 @@
 "use client"
-
-import styles from './chart.module.css'
+import React, { useEffect, useState } from 'react';
+import styles from './chart.module.css';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const data = [
+
+const initialData = [
     {
-        name: "Sun",
-        foodreceived: 4000,
-        estimation: 2400,
+        name: "16",
+        foodreceived: 234,
+        estimation: 508,
     },
     {
-        name: "Mon",
-        foodreceived: 3000,
-        estimation: 1398,
+        name: "17",
+        foodreceived: 543,
+        estimation: 345,
     },
     {
-        name: "Tue",
-        foodreceived: 2000,
-        estimation: 3800,
+        name: "18",
+        foodreceived: 210,
+        estimation: 645,
     },
     {
-        name: "Wed",
-        foodreceived: 2780,
-        estimation: 3908,
+        name: "19",
+        foodreceived: 234,
+        estimation: 234,
     },
     {
-        name: "Thu",
-        foodreceived: 1890,
-        estimation: 4800,
+        name: "20",
+        foodreceived: 324,
+        estimation: 265,
     },
     {
-        name: "Fri",
-        foodreceived: 2390,
-        estimation: 3800,
+        name: "21",
+        foodreceived: 536,
+        estimation: 354,
     },
     {
-        name: "Sat",
-        foodreceived: 3490,
-        estimation: 4300,
+        name: "22",
+        foodreceived: 123,
+        estimation: 554,
     },
 ];
 
 const CustomTooltip = ({ active, payload }) => {
-    if (active) {
-
+    if (active && payload && payload.length >= 2) {
         return (
             <div className={styles.tooltip}>
-                <p className={styles.tooltip3}>{`Number of Food Received: ${payload[0].value}`}</p>
-                <p className={styles.tooltip2}>{`Estimation: ${payload[1].value}`}</p>
+                <p className={styles.tooltip3}>{`Current Month: ${payload[0].value}`}</p>
+                <p className={styles.tooltip2}>{`Previous Month: ${payload[1].value}`}</p>
+            </div>
+        );
+    } else if (active && payload && payload.length === 1) {
+        return (
+            <div className={styles.tooltip}>
+                <p className={styles.tooltip2}>{`Previous Month: ${payload[0].value}`}</p>
             </div>
         );
     }
@@ -56,9 +62,31 @@ const CustomTooltip = ({ active, payload }) => {
 };
 
 const Chart2 = () => {
+    const [data, setData] = useState(initialData);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setData(prevData => {
+                const newData = [...prevData];
+                const index = newData.findIndex(item => item.name === "22");
+                if (index !== -1) {
+                    newData[index] = {
+                        ...newData[index],
+                        foodreceived: Math.floor(newData[index].foodreceived + Math.random() * 5),
+                    };
+                }
+                return newData;
+            });
+        }, 5000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
+
     const customPayload = [
-        { value: 'Amount of Food Received', type: 'line', id: 'food', color: '#8884d8' },
-        { value: 'Estimation', type: 'line', id: 'estimation', color: '#bababa' },
+        { value: 'Current Month', type: 'line', id: 'food', color: '#8884d8' },
+        { value: 'Previous Month', type: 'line', id: 'estimation', color: '#bababa' },
     ];
 
     return (
@@ -66,8 +94,6 @@ const Chart2 = () => {
             <h2 className={styles.title}>Number of Food Received From Vendor</h2>
             <ResponsiveContainer width="100%" height="90%">
                 <LineChart
-                    width={500}
-                    height={300}
                     data={data}
                     margin={{
                         top: 5,
@@ -76,8 +102,8 @@ const Chart2 = () => {
                         bottom: 5,
                     }}
                 >
-                    <XAxis dataKey="name" />
-                    <YAxis />
+                    <XAxis dataKey="name" className={styles.fontSize} />
+                    <YAxis className={styles.fontSize} label={{ value: "Kg", angle: -90, position: "insideLeft" }} />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend payload={customPayload} />
                     <Line type="monotone" dataKey="foodreceived" stroke="#8884d8" />

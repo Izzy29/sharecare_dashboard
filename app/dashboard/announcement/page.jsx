@@ -1,16 +1,20 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { ref, getStorage, listAll, deleteObject, uploadBytes } from 'firebase/storage';
+import React, { useState, useEffect, useRef } from 'react';
+import { ref, getStorage, listAll, deleteObject, uploadBytes, getMetadata } from 'firebase/storage';
 import { imgDB } from "@/app/lib/firebaseconfig";
 import styles from '@/app/ui/dashboard/announcement/announcement.module.css';
 import { MdInfo, MdInfoOutline } from 'react-icons/md';
+import moment from 'moment';
 import { FaInfo } from 'react-icons/fa';
 
 const StoreImageTextFirebase = () => {
   const [imageNames, setImageNames] = useState([]);
+  const [imageDates, setImageDates] = useState([]);
+  const [imageSizes, setImageSizes] = useState([]);
   const [txt, setTxt] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const listRef = ref(imgDB);
@@ -19,11 +23,28 @@ const StoreImageTextFirebase = () => {
       .then((res) => {
         const names = res.items.map((itemRef) => itemRef.name);
         setImageNames(names);
+
+        const getMetadataPromises = res.items.map((itemRef) =>
+          getMetadata(itemRef)
+        );
+
+        Promise.all(getMetadataPromises)
+          .then((metadataList) => {
+            const dates = metadataList.map((metadata) =>
+              moment(metadata.timeCreated).format('lll')
+            );
+            const sizes = metadataList.map((metadata) => metadata.size);
+            setImageDates(dates);
+            setImageSizes(sizes);
+          })
+          .catch((error) => {
+            console.log('Error getting image metadata:', error);
+          });
       })
       .catch((error) => {
-        console.log('Error listing items:', error);
+        console.log("Error listing items:", error);
       });
-  }, [imageNames]);
+  }, []);
 
   const handleDelete = (imageName) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this image?");
@@ -45,22 +66,34 @@ const StoreImageTextFirebase = () => {
   };
 
   const handleUpload = (txt) => {
-
     if (!txt) {
-      alert('Please select an annoucement!');
+      alert('Please select an announcement!');
       return;
     }
 
-    console.log(txt);
+    const storage = getStorage();
     const imgs = ref(imgDB, txt.name);
     uploadBytes(imgs, txt)
-      .then(() => {
-        alert('Annoucement uploaded successfully');
-        const newImageNames = [...imageNames, txt.name];
-        setImageNames(newImageNames);
+      .then((snapshot) => {
+        // Get the uploaded image's metadata
+        return getMetadata(snapshot.ref);
+      })
+      .then((metadata) => {
+        // Update the state with the new image's name, date, and size
+        setImageNames((prevNames) => [...prevNames, txt.name]);
+        setImageDates((prevDates) => [
+          ...prevDates,
+          moment(metadata.timeCreated).format('lll'),
+        ]);
+        setImageSizes((prevSizes) => [...prevSizes, metadata.size]);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+        alert('Announcement uploaded successfully');
       })
       .catch((error) => {
-        alert('Error uploading announcement: Please Try Again');
+        alert('Error uploading announcement: Please try again');
+        console.log(error);
       });
   };
 
@@ -81,23 +114,41 @@ const StoreImageTextFirebase = () => {
             Only PNG, JPG and JPEG files are allowed <br />Image size = 1080 * 400 pixels</span>
         </div>
         <div className={styles.headerUpload}>
-          <input type="file" accept="image/*" onChange={(e) => setTxt(e.target.files[0])} />
+          <input type="file" accept="image/*" ref={fileInputRef} onChange={(e) => setTxt(e.target.files[0])} />
           <button onClick={() => handleUpload(txt)}>
             Upload
           </button>
         </div>
       </div>
 
-      <div className={styles.list}>
-        <label>Annoucement List</label>
-        {currentItems.map((name) => (
-          <div className={styles.listArrange} key={name}>
-            <p>{name}</p>
-            <button className={styles.deleteButton} onClick={() => handleDelete(name)}>
-              Delete
-            </button>
-          </div>
-        ))}
+      <div className={styles.containerInside}>
+        <div className={styles.labelDivider}>
+          <label>Announcement List</label>
+        </div>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>Image Name</th>
+              <th>Created Date</th>
+              <th>File Size</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentItems.map((name, index) => (
+              <tr key={name}>
+                <td>{name.length > 50 ? `${name.slice(0, 60)}...` : name}</td>
+                <td>{imageDates[index]}</td>
+                <td>{(imageSizes[index] / 1000000).toFixed(3)} MB</td>
+                <td>
+                  <button className={styles.deleteButton} onClick={() => handleDelete(name)}>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {/* Pagination */}

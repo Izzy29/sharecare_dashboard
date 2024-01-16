@@ -21,7 +21,7 @@ const UsersVendorPage = async ({ searchParams }) => {
             <table className={styles.table}>
                 <thead className={styles.header}>
                     <tr>
-                        <td>Vendor Name</td>
+                        <td className={styles.venHeader}>Vendor Name</td>
                         <td>Registration Date</td>
                         <td>Status</td>
                         <td>Action</td>
@@ -42,7 +42,7 @@ const UsersVendorPage = async ({ searchParams }) => {
                                     {user.vendorname}
                                 </div>
                             </td>
-                            <td>{user.registrationdate.toString().slice(4, 16)}</td>
+                            <td>{user.registrationdate}</td>
                             <td>
                                 {user.status ? (
                                     <span style={{ color: 'green', fontWeight: 'bold' }}>Verified</span>

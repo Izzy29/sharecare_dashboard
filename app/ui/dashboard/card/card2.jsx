@@ -1,28 +1,30 @@
 "use client"
 import { MdApartment } from "react-icons/md"
 import styles from "./card.module.css";
-import { ref, onValue } from "firebase/database";
 import React, { useState, useEffect } from "react";
-import { realtimeDB } from "@/app/lib/firebaseconfig";
+import { db } from "@/app/lib/firebaseconfig";
 import { getUserTotal } from "@/app/components/dashboardserver";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 const Card2 = () => {
     const [totalVendor, setTotalVendor] = useState("");
     const [percentageVendor, setPercentageVendor] = useState(0);
 
     useEffect(() => {
-        const registeredVendorRef = ref(realtimeDB, "totaluser/102/totalvendor");
+        const registeredVendorsRef = query(collection(db, "users"), where("role", "==", "Vendor"));
 
-        // Listen for changes in the value of 'totalvendor' in the database
-        onValue(registeredVendorRef, (snapshot) => {
-            const currentdata = snapshot.val();
-            setTotalVendor(currentdata);
+        const unsubscribe = onSnapshot(registeredVendorsRef, (querySnapshot) => {
+            const currentData = querySnapshot.size;
+            setTotalVendor(currentData);
 
             const value = getUserTotal();
-            value.then((previousdata) => {
-                setPercentageVendor(((currentdata / previousdata[1].data().totaluser) * 100 - 100).toFixed(2));
+            value.then((previousData) => {
+                console.log(previousData[1].data().totaluser);
+                setPercentageVendor(((currentData / previousData[1].data().totaluser) * 100 - 100).toFixed(2));
             });
         });
+
+        return () => unsubscribe();
     }, []);
 
     return (

@@ -6,21 +6,44 @@ import React, { useState } from 'react';
 async function addDataToFirestore(name) {
 
     try {
-        /*const createDocument = async (id, usertype, totaluser) => {
-            await setDoc(doc(db, "currentregistereduser", id), {
-                usertype,
-                totaluser
+        const createDocumentVolunteer = async (name, role, phone, association) => {
+            await addDoc(collection(db, "users"), {
+                userName: name,
+                role: role,
+                phoneNumber: phone,
+                association: association
             });
         };
 
-        // Creating 10 documents with different and similar checkpoints
-        // Creating 10 more documents with different and similar checkpoints
-        await createDocument("1", "student", "345");
-        await createDocument("2", "vendor", "10");
-        await createDocument("3", "volunteer", "52");*/
+        const createDocumentVendor = async (name, role, phone, email, brn, address) => {
+            await addDoc(collection(db, "users"), {
+                userName: name,
+                role: role,
+                phoneNumber: phone,
+                email: email,
+                brn: brn,
+                address: address
+            });
+        };
+
+        const createDocumentStudent = async (name, role, phone, email) => {
+            await addDoc(collection(db, "users"), {
+                userName: name,
+                role: role,
+                phoneNumber: phone,
+                email: email
+            });
+        };
+
+        //await createDocument("Rafiq Haikal", "volunteer", "0123456789", "PERMAS");
+        //await createDocumentVendor("PKS Restaurant", "vendor", "0123456789", "rusyaidi@example.com", "123", "Serdang, Selangor");
+        await createDocumentStudent("Thayalen Sarween", "student", "01936453764", "thayalen@gmail.com");
+
+        //await createDocument("2", 2/12/2023, "256");
+        //await createDocument("3", 3/12/2023, "154");
 
 
-        const docRef = doc(db, "historyregistereduser", "1");
+        /*const docRef = doc(db, "historyregistereduser", "1");
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
@@ -35,8 +58,8 @@ async function addDataToFirestore(name) {
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, " => ", doc.data());
-        });*/
-        return docSnap;
+        });
+        return docSnap;*/
 
 
     } catch (error) {
@@ -49,8 +72,9 @@ const Testpage = () => {
     const [name, setName] = useState("");
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const added = await addDataToFirestore(name);
-        console.log(added?.data()); // Add null check before calling data()
+        await addDataToFirestore(name);
+        alert("Added successfully!");
+        /*console.log(added?.data()); // Add null check before calling data()
 
         if (added) {
             setName("");
@@ -60,7 +84,7 @@ const Testpage = () => {
             } else {
                 alert("Not found! " + name);
             }
-        }
+        }*/
     };
 
     const handleRetrieve = async () => {
@@ -82,11 +106,10 @@ const Testpage = () => {
         <div>
             <h1>Beta version 1.0</h1>
             <h2>Send data to firestore database!</h2>
-            <button onClick={() => { handleRetrieve() }}>Retrieve List of Data From User Vendor</button>
 
             <form onSubmit={handleSubmit}>
                 <input
-                    type="text"
+                    type="hidden"
                     id="name"
                     name="name"
                     placeholder="Input your name"

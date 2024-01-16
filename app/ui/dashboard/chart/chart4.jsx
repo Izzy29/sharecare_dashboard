@@ -1,53 +1,60 @@
 "use client"
-
+import React, { useState, useEffect } from 'react';
 import styles from './chart.module.css'
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const data = [
+const generateRandomValue = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+const initialData = [
     {
-        day: "21/1",
-        food: 4000,
-        estimation: 2400,
+        name: "16",
+        excessfood: generateRandomValue(200, 800),
+        estimation: generateRandomValue(200, 800),
     },
     {
-        day: "22/1",
-        food: 3000,
-        estimation: 1398,
+        name: "17",
+        excessfood: generateRandomValue(200, 800),
+        estimation: generateRandomValue(200, 800),
     },
     {
-        day: "23/1",
-        food: 2000,
-        estimation: 3800,
+        name: "18",
+        excessfood: generateRandomValue(200, 800),
+        estimation: generateRandomValue(200, 800),
     },
     {
-        day: "24/1",
-        food: 2780,
-        estimation: 3908,
+        name: "19",
+        excessfood: generateRandomValue(200, 800),
+        estimation: generateRandomValue(200, 800),
     },
     {
-        day: "25/1",
-        food: 1890,
-        estimation: 4800,
+        name: "20",
+        excessfood: generateRandomValue(200, 800),
+        estimation: generateRandomValue(200, 800),
     },
     {
-        day: "26/1",
-        food: 2390,
-        estimation: 3800,
+        name: "21",
+        excessfood: generateRandomValue(200, 800),
+        estimation: generateRandomValue(200, 800),
     },
     {
-        day: "27/1",
-        food: 3490,
-        estimation: 4300,
+        name: "22",
+        excessfood: generateRandomValue(200, 800),
+        estimation: generateRandomValue(200, 800),
     },
 ];
 
 const CustomTooltip = ({ active, payload }) => {
-    if (active) {
-
+    if (active && payload && payload.length >= 2) {
         return (
             <div className={styles.tooltip}>
-                <p className={styles.tooltip1}>{`Excess Food: ${payload[0].value}`}</p>
-                <p className={styles.tooltip2}>{`Estimation: ${payload[1].value}`}</p>
+                <p className={styles.tooltip3}>{`Current Month: ${payload[0].value}`}</p>
+                <p className={styles.tooltip2}>{`Previous Month: ${payload[1].value}`}</p>
+            </div>
+        );
+    } else if (active && payload && payload.length === 1) {
+        return (
+            <div className={styles.tooltip}>
+                <p className={styles.tooltip2}>{`Previous Month: ${payload[0].value}`}</p>
             </div>
         );
     }
@@ -57,31 +64,51 @@ const CustomTooltip = ({ active, payload }) => {
 
 const Chart3 = () => {
 
+    const [data, setData] = useState(initialData);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setData(prevData => {
+                const newData = [...prevData];
+                const index = newData.findIndex(item => item.name === "22");
+                if (index !== -1) {
+                    newData[index] = {
+                        ...newData[index],
+                        excessfood: Math.floor(newData[index].excessfood - Math.random() * 10),
+                    };
+                }
+                return newData;
+            });
+        }, 5000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
+
     const customPayload = [
-        { value: 'Excess Food', type: 'line', id: 'food', color: 'red' },
-        { value: 'Estimation', type: 'line', id: 'estimation', color: '#bababa' },
+        { value: 'Current Month', type: 'line', id: 'excessfood', color: 'red' },
+        { value: 'Previous Month', type: 'line', id: 'estimation', color: '#bababa' },
     ];
 
     return (
         <div className={styles.container}>
-            <h2 className={styles.title}>Number of Excess Food</h2>
+            <h2 className={styles.title}>Amount of Excess Food</h2>
             <ResponsiveContainer width="100%" height="90%">
                 <LineChart
-                    width={500}
-                    height={300}
                     data={data}
                     margin={{
                         top: 5,
                         right: 30,
-                        left: 20,
+                        left: 0,
                         bottom: 5,
                     }}
                 >
-                    <XAxis dataKey="day" />
-                    <YAxis />
+                    <XAxis dataKey="name" className={styles.fontSize} />
+                    <YAxis className={styles.fontSize} label={{ value: "Kg", angle: -90, position: "insideLeft", style: { textAnchor: "middle" } }} />
                     <Tooltip content={<CustomTooltip />} />
                     <Legend payload={customPayload} />
-                    <Line type="monotone" dataKey="food" stroke="red" />
+                    <Line type="monotone" dataKey="excessfood" stroke="red" />
                     <Line type="monotone" dataKey="estimation" stroke="#bababa" strokeDasharray="3 4 5 2" />
                 </LineChart>
             </ResponsiveContainer>

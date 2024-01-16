@@ -21,7 +21,7 @@ const UsersVolunteerPage = async ({ searchParams }) => {
             <table className={styles.table}>
                 <thead className={styles.header}>
                     <tr>
-                        <td>Volunteer Name</td>
+                        <td className={styles.venHeader}>Volunteer Name</td>
                         <td>Registration Date</td>
                         <td>Association</td>
                         <td>Action</td>
@@ -42,7 +42,7 @@ const UsersVolunteerPage = async ({ searchParams }) => {
                                     {user.volunteername}
                                 </div>
                             </td>
-                            <td>{user.registrationdate.toString().slice(4, 16)}</td>
+                            <td>{user.registrationdate}</td>
                             <td>{user.association}</td>
                             <td>
                                 <div className={styles.buttons}>

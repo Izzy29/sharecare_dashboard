@@ -2,3 +2,17 @@
     margin-top: 20px;
     margin-left: 10px;
 }
+
+.container button {
+    padding: 20px;
+    background-color: #5d57c9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-top: 10px;
+    font-size: large;
+    font-weight: bold;
+    margin-bottom: 10px;
+}

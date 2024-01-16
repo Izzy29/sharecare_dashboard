@@ -10,6 +10,7 @@ import {
     MdHelpCenter,
     MdLogout,
     MdAnnouncement,
+    MdLocalActivity,
 } from "react-icons/md";
 
 const menuItems = [
@@ -49,10 +50,15 @@ const menuItems = [
     {
         list: [
             {
+                title: "Activity Log",
+                path: "/dashboard/activitylog",
+                icon: <MdLocalActivity />,
+            },
+            {
                 title: "FAQ",
                 path: "/dashboard/FAQ",
                 icon: <MdHelpCenter />,
-            },
+            }
         ],
     },
 ];

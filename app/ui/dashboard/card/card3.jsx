@@ -1,10 +1,10 @@
 "use client"
 import { MdPeople } from "react-icons/md";
 import styles from "./card.module.css";
-import { ref, onValue } from "firebase/database";
 import React, { useState, useEffect } from "react";
-import { realtimeDB } from "@/app/lib/firebaseconfig";
+import { db } from "@/app/lib/firebaseconfig";
 import { getUserTotal } from "@/app/components/dashboardserver";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 const Card3 = () => {
 
@@ -12,17 +12,19 @@ const Card3 = () => {
     const [percentageVolunteer, setPercentageVolunteer] = useState(0);
 
     useEffect(() => {
-        const registeredVolunteerRef = ref(realtimeDB, "totaluser/103/totalvolunteer");
+        const registeredVolunteersRef = query(collection(db, "users"), where("role", "==", "Volunteer"));
 
-        onValue(registeredVolunteerRef, (snapshot) => {
-            const currentdata = snapshot.val();
-            setTotalVolunteer(currentdata);
+        const unsubscribe = onSnapshot(registeredVolunteersRef, (querySnapshot) => {
+            const currentData = querySnapshot.size;
+            setTotalVolunteer(currentData);
 
             const value = getUserTotal();
-            value.then((previousdata) => {
-                setPercentageVolunteer(((currentdata / previousdata[2].data().totaluser) * 100 - 100).toFixed(2));
+            value.then((previousData) => {
+                setPercentageVolunteer(((currentData / previousData[2].data().totaluser) * 100 - 100).toFixed(2));
             });
         });
+
+        return () => unsubscribe();
     }, []);
 
     return (

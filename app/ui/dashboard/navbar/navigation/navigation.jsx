@@ -31,6 +31,8 @@ const Navigation = () => {
                     return 'Frequent Asked Question (FAQ)';
                 case 'test':
                     return 'Testing Area';
+                case 'activitylog':
+                    return 'Activity Log';
                 default:
                     return 'User Information';
             }

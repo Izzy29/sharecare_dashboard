@@ -1,28 +1,61 @@
 "use client"
-import RealTimeChart from '@/app/components/RealTimeChart';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Line } from 'recharts';
+import moment from 'moment';
 
 const Testpage3 = () => {
-    const [data, setData] = useState([]);
+    const formatDate = (date) => {
+        return moment(date).format('L');
+    };
+
+    const getRandomValue = () => {
+        return Math.floor(Math.random() * 100);
+    };
+
+    const [data, setData] = useState(() => {
+        const currentDate = new Date();
+        const dates = [];
+        for (let i = 6; i >= 0; i--) {
+            const previousDate = moment(currentDate).subtract(i, 'days').toDate();
+            dates.push({
+                name: formatDate(previousDate),
+                valuePreviousWeek: getRandomValue(),
+                valueThisWeek: getRandomValue()
+            });
+        }
+        return dates;
+    });
+
+    const [chartData, setChartData] = useState([]);
+
+    useEffect(() => {
+        setChartData(data);
+    }, [data]);
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setData((prevData) => {
-                const newValue = Math.random() * 100; // Generate a random value
-                const newData = [...prevData, { name: new Date().toLocaleTimeString(), value: newValue }];
-                return newData.slice(-10); // Keep only the last 10 data points
+            setData(prevData => {
+                const randomValue = getRandomValue();
+                const newData = [...prevData.slice(1), { name: formatDate(new Date()), valuePreviousWeek: prevData[prevData.length - 1].valueThisWeek, valueThisWeek: randomValue }];
+                return newData;
             });
-        }, 3000);
+        }, 1000);
 
-        return () => {
-            clearInterval(interval);
-        };
+        return () => clearInterval(interval);
     }, []);
 
     return (
         <div>
-            <h1>Real-Time Chart</h1>
-            <RealTimeChart data={data} />
+            {console.log(chartData)}
+            <LineChart width={730} height={250} data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="valueThisWeek" name="Current Day" stroke="#8884d8" />
+                <Line type="monotone" dataKey="valuePreviousWeek" name="Previous Day" stroke="#82ca9d" />
+            </LineChart>
         </div>
     );
 };

@@ -1,19 +1,17 @@
 .container {
     padding: 20px;
-    border-radius: 10px;
-    background-color: var(--bgSoft);
+    background-color: var(--mainColor);
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-left: 5px;
     margin-right: 5px;
     position: relative;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .title {
-    color: var(--text);
-    font-weight: bold;
+    color: white;
+    font-weight: 500;
     text-transform: capitalize;
     font-size: 20px;
 }
@@ -41,7 +39,7 @@
     /* Optional: Remove padding if you want the icon to be closer to the button edges */
     font-size: 20px;
     /* Set the desired font size for the icon */
-    color: #000;
+    color: white;
     /* Set the desired color for the icon */
 }
 
