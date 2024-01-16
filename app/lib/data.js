@@ -1,50 +1,47 @@
 import { UserVen, UserVol, StudRecFood } from "./model"
 import { connectToDB } from "./utils";
 import { db } from "@/app/lib/firebaseconfig";
-import { getFirestore, collection, query, where, limit, getDocs } from "firebase/firestore";
+import { getFirestore, collection, query, where, limit, getDocs, getDoc, doc } from "firebase/firestore";
 
 
 //To fetch vendor using firebase
-export const fetchUsersVendor = async (q, page) => {
-    const regex = new RegExp(q, "i");
-    const ITEM_PER_PAGE = 5;
-
+export const fetchUsersVendor = async () => {
     try {
-        const qRef = query(
-            collection(db, "users"),
-            where("role", "==", "vendor"),
-            limit(ITEM_PER_PAGE),
-            offset(ITEM_PER_PAGE * (page - 1))
-        );
-        const snapshot = await getDocs(qRef);
-        console.log("Im here" + snapshot);
+        const q = query(collection(db, "users"), where("role", "==", "Vendor"));
+        const querySnapshot = await getDocs(q);
+        const users = querySnapshot.docs.map(doc => doc.data());
+        return users;
 
-        const count = snapshot.size;
-        const users = snapshot.docs.map(doc => doc.data());
-
-        return { count, users };
     } catch (err) {
         console.log(err);
-        throw new Error("Failed to fetch users!");
+        throw new Error("Failed to fetch the user!");
     }
 }
 
-//To fetch vendor informations
-export const fetchUsers = async (q, page) => {
-    const regex = new RegExp(q, "i");
-
-    console.log(regex);
-    const ITEM_PER_PAGE = 5;
-
+//Fetch document ID using firebase
+export const fetchUsersVendorID = async () => {
     try {
-        connectToDB()
-        const count = await UserVen.find({ vendorname: { $regex: regex } }).count();
-        const users = await UserVen.find({ vendorname: { $regex: regex } }).limit(ITEM_PER_PAGE).skip(ITEM_PER_PAGE * (page - 1));
-        return { count, users };
+        const q = query(collection(db, "users"), where("role", "==", "Vendor"));
+        const querySnapshot = await getDocs(q);
+        const usersID = querySnapshot.docs.map(doc => doc.id);
+        return usersID;
 
     } catch (err) {
         console.log(err);
-        throw new Error("Failed to fetch users!");
+        throw new Error("Failed to fetch the user!");
+    }
+}
+
+//Fetch specific uservendor
+export const fetchOneUserVendor = async (id) => {
+    try {
+        const docRef = doc(db, "users", id);
+        const docSnap = await getDoc(docRef);
+
+        return docSnap.data();
+    } catch (err) {
+        console.log(err);
+        throw new Error("Failed to fetch the user!");
     }
 }
 
@@ -66,12 +63,13 @@ export const fetchUsersVol = async (q, page) => {
     }
 }
 
-//To fetch single vendor information
-export const fetchUserVendor = async (id) => {
+//To fetch single volunteer information
+export const fetchUserVolunteer = async () => {
     try {
-        connectToDB()
-        const user = await UserVen.findById(id);
-        return user;
+        const q = query(collection(db, "users"), where("role", "==", "Volunteer"));
+        const querySnapshot = await getDocs(q);
+        const users = querySnapshot.docs.map(doc => doc.data());
+        return users;
 
     } catch (err) {
         console.log(err);
@@ -79,13 +77,25 @@ export const fetchUserVendor = async (id) => {
     }
 }
 
-//To fetch single volunteer information
-export const fetchUserVolunteer = async (id) => {
+export const fetchUserVolunteerID = async () => {
     try {
-        connectToDB()
-        const user = await UserVol.findById(id);
-        return user;
+        const q = query(collection(db, "users"), where("role", "==", "Volunteer"));
+        const querySnapshot = await getDocs(q);
+        const usersID = querySnapshot.docs.map(doc => doc.id);
+        return usersID;
 
+    } catch (err) {
+        console.log(err);
+        throw new Error("Failed to fetch the user!");
+    }
+}
+
+export const fetchOneUserVolunteer = async (id) => {
+    try {
+        const docRef = doc(db, "users", id);
+        const docSnap = await getDoc(docRef);
+
+        return docSnap.data();
     } catch (err) {
         console.log(err);
         throw new Error("Failed to fetch the user!");

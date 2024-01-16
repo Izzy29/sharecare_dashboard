@@ -5,14 +5,14 @@ import { UserVen, UserVol } from "./model";
 import { connectToDB } from "./utils";
 import { redirect } from "next/navigation";
 import { signIn } from "../auth";
+import { deleteDoc, doc, setDoc } from "firebase/firestore";
+import { db } from "./firebaseconfig";
 
 export const deleteUserVendor = async (formData) => {
-    console.log(formData);
     const { id } = Object.fromEntries(formData);
-
+    console.log(id);
     try {
-        connectToDB();
-        await UserVen.findByIdAndDelete(id);
+        await deleteDoc(doc(db, "users", id));
     } catch (err) {
         console.log(err);
         throw new Error("Failed to delete user!");
@@ -22,12 +22,10 @@ export const deleteUserVendor = async (formData) => {
 };
 
 export const deleteUserVolunteer = async (formData) => {
-    console.log(formData);
     const { id } = Object.fromEntries(formData);
-
+    console.log(id);
     try {
-        connectToDB();
-        await UserVol.findByIdAndDelete(id);
+        await deleteDoc(doc(db, "users", id));
     } catch (err) {
         console.log(err);
         throw new Error("Failed to delete user!");
@@ -37,32 +35,23 @@ export const deleteUserVolunteer = async (formData) => {
 };
 
 export const updateUserVendor = async (formData) => {
-    const { id, vendorname, registrationdate, district, businesstype, status } =
-        Object.fromEntries(formData);
-    console.log("Im here!");
+    const { docID, id, name, email, address, phoneNumber, brn, status } = Object.fromEntries(formData);
 
     try {
-        connectToDB();
-
-        const updateFields = {
-            vendorname,
-            registrationdate,
-            district,
-            businesstype,
-            status,
-        };
-
-        Object.keys(updateFields).forEach(
-            (key) =>
-                (updateFields[key] === "" || undefined) && delete updateFields[key]
-        );
-
-        await UserVen.findByIdAndUpdate(id, updateFields);
+        await setDoc(doc(db, "users", docID), {
+            id: id,
+            name: name,
+            email: email,
+            address: address,
+            phoneNumber: phoneNumber,
+            brn: brn,
+            status: (status === "true"),
+            role: "Vendor"
+        });
     } catch (err) {
         console.log(err);
         throw new Error("Failed to update user!");
     }
-
     revalidatePath("/dashboard/usersVendor");
     redirect("/dashboard/usersVendor");
 };

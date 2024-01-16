@@ -1,7 +1,7 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { db } from '../lib/firebaseconfig';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 export const generatePDF = async (id, name) => {
     alert("Generating PDF...");
@@ -116,14 +116,16 @@ export const generatePDF = async (id, name) => {
         //List of Registered Vendor
         case 4: {
             // Retrieve the document from Firestore
-            getDocs(collection(db, "uservendor"))
+            const q = query(collection(db, "users"), where("role", "==", "Vendor"));
+            getDocs(q)
                 .then((querySnapshot) => {
                     const data = [];
 
                     // Iterate over each document and add it to the data array
                     querySnapshot.forEach((doc) => {
-                        const { vendorname, businesstype, district, registrationdate } = doc.data();
-                        data.push({ vendorname, businesstype, district, registrationdate });
+                        console.log("Im here" + doc.data());
+                        const { id, name, email, brn, address, phoneNumber } = doc.data();
+                        data.push({ id, name, email, brn, address, phoneNumber });
                     });
 
                     // Set the font size and type
@@ -147,14 +149,17 @@ export const generatePDF = async (id, name) => {
                     doc.setFont("helvetica", "normal");
 
                     // Create the table headers
-                    const headers = [["Name", "Business Type", "District", "Registration Date"]];
+                    const headers = [["Number", "ID", "Name", "Email", "Business Registration Number", "Address", "Phone Number"]];
 
                     // Create the table body from the fetched data
-                    const body = data.map(({ vendorname, businesstype, district, registrationdate }) => [
-                        vendorname,
-                        businesstype,
-                        district || "",
-                        registrationdate ? new Date(registrationdate.toDate()).toLocaleDateString() : ""
+                    const body = data.map(({ id, name, email, brn, address, phoneNumber }, index) => [
+                        index + 1,
+                        id,
+                        name,
+                        email || "",
+                        brn,
+                        address,
+                        phoneNumber
                     ]);
 
                     // Set the startY position for the table
@@ -185,14 +190,15 @@ export const generatePDF = async (id, name) => {
 
             //List of Registered Volunteer
         } case 5: {
-            getDocs(collection(db, "uservolunteer"))
+            const q = query(collection(db, "users"), where("role", "==", "Volunteer"));
+            getDocs(q)
                 .then((querySnapshot) => {
                     const data = [];
 
                     // Iterate over each document and add it to the data array
                     querySnapshot.forEach((doc) => {
-                        const { volunteername, association, district, registrationdate } = doc.data();
-                        data.push({ volunteername, association, district, registrationdate });
+                        const { id, name, email, phoneNumber, association } = doc.data();
+                        data.push({ id, name, email, phoneNumber, association });
                     });
 
                     // Set the font size and type
@@ -216,14 +222,16 @@ export const generatePDF = async (id, name) => {
                     doc.setFont("helvetica", "normal");
 
                     // Create the table headers
-                    const headers = [["Name", "Business Type", "District", "Registration Date"]];
+                    const headers = [["Number", "ID", "Name", "Email", "Phone Number", "Association"]];
 
                     // Create the table body from the fetched data
-                    const body = data.map(({ volunteername, association, district, registrationdate }) => [
-                        volunteername,
-                        association,
-                        district || "",
-                        registrationdate ? new Date(registrationdate.toDate()).toLocaleDateString() : ""
+                    const body = data.map(({ id, name, email, phoneNumber, association }, index) => [
+                        index + 1,
+                        id,
+                        name,
+                        email,
+                        phoneNumber,
+                        association
                     ]);
 
                     // Set the startY position for the table
@@ -254,13 +262,14 @@ export const generatePDF = async (id, name) => {
 
             //List of Registered Student
         } case 6: {
-            getDocs(collection(db, "userstudent"))
+            const q = query(collection(db, "users"), where("role", "==", "Student"));
+            getDocs(q)
                 .then((querySnapshot) => {
                     const data = [];
 
                     querySnapshot.forEach((doc) => {
-                        const { studentname, email, checkpoint } = doc.data();
-                        data.push({ studentname, email, checkpoint });
+                        const { id, name, email } = doc.data();
+                        data.push({ id, name, email });
                     });
 
                     doc.setFontSize(14);
@@ -279,12 +288,13 @@ export const generatePDF = async (id, name) => {
                     doc.setFontSize(10);
                     doc.setFont("helvetica", "normal");
 
-                    const headers = [["Name", "Email", "Checkpoint"]];
+                    const headers = [["Number", "ID", "Name", "Email"]];
 
-                    const body = data.map(({ studentname, email, checkpoint }) => [
-                        studentname,
-                        email,
-                        checkpoint || ""
+                    const body = data.map(({ id, name, email }, index) => [
+                        index + 1,
+                        id,
+                        name,
+                        email
                     ]);
 
                     const startY = 30;
@@ -310,7 +320,8 @@ export const generatePDF = async (id, name) => {
             //List of Association
         } case 7: {
             const associationCount = new Map();
-            getDocs(collection(db, "uservolunteer"))
+            const q = query(collection(db, "users"), where("role", "==", "Volunteer"));
+            getDocs(q)
                 .then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
                         const associationName = doc.data().association;

@@ -3,10 +3,18 @@ import { db } from "@/app/lib/firebaseconfig";
 import { addDoc, collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import React, { useState } from 'react';
 
+const writeUserData = (studentTotalID, totalStudent, date) => {
+    const db = getDatabase();
+    set(ref(db, 'totaluser/' + studentTotalID), {
+        totalStudent: totalStudent,
+        date: date,
+    });
+};
+
 async function addDataToFirestore(name) {
 
     try {
-        const createDocumentVolunteer = async (name, role, phone, association) => {
+        /*const createDocumentVolunteer = async (name, role, phone, association) => {
             await addDoc(collection(db, "users"), {
                 userName: name,
                 role: role,
@@ -33,7 +41,7 @@ async function addDataToFirestore(name) {
                 phoneNumber: phone,
                 email: email
             });
-        };
+        };*/
 
         //await createDocument("Rafiq Haikal", "volunteer", "0123456789", "PERMAS");
         //await createDocumentVendor("PKS Restaurant", "vendor", "0123456789", "rusyaidi@example.com", "123", "Serdang, Selangor");

@@ -1,19 +1,17 @@
-import styles from "@/app/ui/dashboard/users/users.module.css";
-import Search from "@/app/ui/dashboard/search/search";
-import Pagination from "@/app/ui/dashboard/pagination/pagination";
-import Link from "next/link";
+import Link from 'next/link';
+import styles from './testpage7.module.css';
 import { fetchUsersVendor, fetchUsersVendorID } from '@/app/lib/data';
-import { deleteUserVendor } from "@/app/lib/actions";
-import ConfirmationButtonVendor from "@/app/ui/dashboard/users/confirmationButtonVendor";
 
-const UsersVendorPage = async () => {
-
+const ListOfRegisteredVendor = async () => {
     const users = await fetchUsersVendor();
     const usersID = await fetchUsersVendorID();
+
+    console.log(usersID);
 
     return (
         <div>
             <div className={styles.header}>
+                <h1>User List</h1>
             </div>
             <div className={styles.content}>
                 <table>
@@ -36,7 +34,7 @@ const UsersVendorPage = async () => {
                                     </Link>
                                 </td>
                                 <td>
-                                    <ConfirmationButtonVendor userId={usersID[index]} />
+                                    <button>Delete</button>
                                 </td>
                             </tr>
                         ))}
@@ -50,4 +48,4 @@ const UsersVendorPage = async () => {
     );
 };
 
-export default UsersVendorPage
+export default ListOfRegisteredVendor;

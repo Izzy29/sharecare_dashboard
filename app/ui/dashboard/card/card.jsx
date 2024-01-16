@@ -3,12 +3,14 @@ import { MdPeople } from "react-icons/md";
 import styles from "./card.module.css";
 import React, { useState, useEffect } from "react";
 import { db } from "@/app/lib/firebaseconfig";
-import { getUserTotal } from "@/app/components/dashboardserver";
+import { getUserTotal, updatePreviousTotal } from "@/app/components/dashboardserver";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 const Card = () => {
     const [totalStudent, setTotalStudent] = useState("");
     const [percentageStudent, setPercentageStudent] = useState(0);
+
+    updatePreviousTotal();
 
     useEffect(() => {
         const registeredStudentsRef = query(collection(db, "users"), where("role", "==", "Student"));
